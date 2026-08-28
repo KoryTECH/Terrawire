@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TerraWire Mobile Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700&amp;family=JetBrains+Mono:wght@500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-low": "#181c22",
+                    "on-primary-fixed": "#002203",
+                    "primary-fixed": "#72ff70",
+                    "on-error": "#690005",
+                    "secondary-fixed-dim": "#00dce6",
+                    "surface-dim": "#10141a",
+                    "error": "#ffb4ab",
+                    "surface-container-highest": "#31353c",
+                    "on-tertiary-container": "#7a5b3c",
+                    "tertiary": "#fff8f4",
+                    "on-primary-container": "#007117",
+                    "on-error-container": "#ffdad6",
+                    "background": "#10141a",
+                    "surface-variant": "#31353c",
+                    "on-tertiary-fixed": "#2c1701",
+                    "secondary-container": "#00f1fd",
+                    "surface": "#161b22",
+                    "inverse-primary": "#006e16",
+                    "on-secondary": "#00373a",
+                    "on-secondary-container": "#006a6f",
+                    "on-tertiary-fixed-variant": "#5d4124",
+                    "secondary-fixed": "#6ff6ff",
+                    "text-muted": "#8b949e",
+                    "secondary": "#dcfdff",
+                    "on-secondary-fixed-variant": "#004f53",
+                    "on-primary": "#003907",
+                    "on-surface-variant": "#b9ccb2",
+                    "border-subtle": "#30363d",
+                    "on-background": "#dfe2eb",
+                    "on-tertiary": "#442b10",
+                    "alert-critical": "#ff3131",
+                    "outline": "#84967e",
+                    "primary-fixed-dim": "#00e639",
+                    "on-secondary-fixed": "#002022",
+                    "surface-tint": "#00e639",
+                    "tertiary-fixed-dim": "#e7bf99",
+                    "error-container": "#93000a",
+                    "inverse-on-surface": "#2d3137",
+                    "inverse-surface": "#dfe2eb",
+                    "outline-variant": "#3b4b37",
+                    "surface-bright": "#353940",
+                    "surface-container-lowest": "#0a0e14",
+                    "on-primary-fixed-variant": "#00530e",
+                    "tertiary-container": "#ffd5ae",
+                    "surface-container": "#1c2026",
+                    "tertiary-fixed": "#ffdcbd",
+                    "primary-container": "#00ff41",
+                    "on-surface": "#dfe2eb",
+                    "primary": "#ebffe2",
+                    "surface-container-high": "#262a31"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "container-max": "1440px",
+                    "margin-mobile": "16px",
+                    "margin-desktop": "32px",
+                    "gutter": "16px",
+                    "unit": "4px"
+            },
+            "fontFamily": {
+                    "body-md": [
+                            "hankenGrotesk"
+                    ],
+                    "label-caps": [
+                            "jetbrainsMono"
+                    ],
+                    "headline-md": [
+                            "hankenGrotesk"
+                    ],
+                    "data-lg": [
+                            "jetbrainsMono"
+                    ],
+                    "headline-sm": [
+                            "hankenGrotesk"
+                    ],
+                    "display-lg": [
+                            "hankenGrotesk"
+                    ],
+                    "body-sm": [
+                            "hankenGrotesk"
+                    ],
+                    "data-md": [
+                            "jetbrainsMono"
+                    ]
+            },
+            "fontSize": {
+                    "body-md": [
+                            "16px",
+                            {
+                                    "lineHeight": "24px",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "label-caps": [
+                            "12px",
+                            {
+                                    "lineHeight": "16px",
+                                    "letterSpacing": "0.08em",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "headline-md": [
+                            "24px",
+                            {
+                                    "lineHeight": "32px",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "data-lg": [
+                            "20px",
+                            {
+                                    "lineHeight": "28px",
+                                    "letterSpacing": "-0.01em",
+                                    "fontWeight": "500"
+                            }
+                    ],
+                    "headline-sm": [
+                            "18px",
+                            {
+                                    "lineHeight": "24px",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "display-lg": [
+                            "48px",
+                            {
+                                    "lineHeight": "56px",
+                                    "letterSpacing": "-0.02em",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "body-sm": [
+                            "14px",
+                            {
+                                    "lineHeight": "20px",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "data-md": [
+                            "14px",
+                            {
+                                    "lineHeight": "20px",
+                                    "fontWeight": "500"
+                            }
+                    ]
+            }
+    },
+        },
+      }
+    </script>
+<style>
+        /* Custom scrollbar for horizontal swipe area */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        
+        /* Shimmer effect for skeleton loading */
+        @keyframes shimmer {
+            0% { background-position: -1000px 0; }
+            100% { background-position: 1000px 0; }
+        }
+        .animate-shimmer {
+            animation: shimmer 2s infinite linear;
+            background: linear-gradient(to right, #161b22 4%, #262a31 25%, #161b22 36%);
+            background-size: 1000px 100%;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md min-h-screen flex flex-col">
+<!-- TopNavBar (From Shared Components JSON) -->
+<header class="bg-surface-container-low dark:bg-surface-container-low font-body-md text-body-md border-b border-border-subtle fixed top-0 left-0 w-full z-50 flex justify-between items-center px-margin-mobile md:px-margin-desktop h-16">
+<div class="flex items-center">
+<span class="font-headline-md text-headline-md font-bold text-primary-fixed tracking-tight">TERRAWIRE</span>
+</div>
+<div class="flex items-center space-x-4">
+<span class="font-data-md text-data-md text-text-muted">12:45:03 UTC</span>
+<button aria-label="refresh" class="text-primary-fixed dark:text-primary-fixed-dim hover:text-primary-fixed-dim transition-colors active:scale-95 duration-100 flex items-center justify-center w-8 h-8 rounded-full focus:outline-none focus:ring-2 focus:ring-primary-fixed">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">refresh</span>
+</button>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="flex-grow pt-16 pb-20">
+<!-- Swipeable Widgets Section -->
+<section class="mt-4 mb-6">
+<div class="px-margin-mobile mb-2 flex justify-between items-center">
+<h2 class="font-label-caps text-label-caps text-on-surface-variant">GLOBAL SENSORS</h2>
+<div class="flex space-x-1">
+<div class="w-2 h-2 rounded-full bg-primary-fixed"></div>
+<div class="w-2 h-2 rounded-full bg-surface-variant"></div>
+<div class="w-2 h-2 rounded-full bg-surface-variant"></div>
+</div>
+</div>
+<div class="flex overflow-x-auto hide-scrollbar px-margin-mobile space-x-unit pb-4 snap-x snap-mandatory">
+<!-- Widget 1: Earthquake (Active/Normal) -->
+<div class="flex-shrink-0 w-64 bg-surface border border-border-subtle rounded flex flex-col snap-start relative overflow-hidden group hover:border-primary-fixed transition-colors">
+<div class="px-unit py-2 border-b border-border-subtle bg-surface-container flex justify-between items-center">
+<span class="font-label-caps text-label-caps text-primary-fixed flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">upload_file</span> SEISMIC
+                        </span>
+<span class="font-data-md text-data-md text-alert-critical bg-alert-critical/10 px-2 py-0.5 rounded">7.2</span>
+</div>
+<div class="p-4 flex-grow flex flex-col justify-center">
+<div class="font-headline-sm text-headline-sm text-on-surface mb-1">Pacific Plate Shift</div>
+<div class="font-body-sm text-body-sm text-text-muted mb-2">Depth: 10km | Tsunami Warning Issued</div>
+<!-- Mini Sparkline -->
+<div class="h-8 flex items-end space-x-[2px] mt-2 opacity-80">
+<div class="w-2 bg-surface-variant h-2"></div>
+<div class="w-2 bg-surface-variant h-3"></div>
+<div class="w-2 bg-surface-variant h-2"></div>
+<div class="w-2 bg-primary-fixed-dim h-4"></div>
+<div class="w-2 bg-primary-fixed h-8"></div>
+<div class="w-2 bg-primary-fixed-dim h-6"></div>
+<div class="w-2 bg-surface-variant h-3"></div>
+<div class="w-2 bg-surface-variant h-2"></div>
+</div>
+</div>
+</div>
+<!-- Widget 2: Orbital (Error State) -->
+<div class="flex-shrink-0 w-64 bg-surface border border-error/50 rounded flex flex-col snap-start relative overflow-hidden group">
+<div class="px-unit py-2 border-b border-error/30 bg-error/10 flex justify-between items-center">
+<span class="font-label-caps text-label-caps text-error flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">satellite</span> ORBITAL
+                        </span>
+<span class="material-symbols-outlined text-error text-[16px]">warning</span>
+</div>
+<div class="p-4 flex-grow flex flex-col items-center justify-center text-center">
+<span class="material-symbols-outlined text-[32px] text-error mb-2 opacity-80">sync_problem</span>
+<div class="font-body-sm text-body-sm text-on-error-container">Telemetry Lost</div>
+<div class="font-data-md text-data-md text-text-muted mt-1 text-xs">SAT-V42 OFFLINE</div>
+<button class="mt-3 text-label-caps font-label-caps text-error border border-error px-3 py-1 rounded hover:bg-error/10 transition-colors">RECONNECT</button>
+</div>
+</div>
+<!-- Widget 3: Atmospheric -->
+<div class="flex-shrink-0 w-64 bg-surface border border-border-subtle rounded flex flex-col snap-start relative overflow-hidden group hover:border-secondary-fixed-dim transition-colors">
+<div class="px-unit py-2 border-b border-border-subtle bg-surface-container flex justify-between items-center">
+<span class="font-label-caps text-label-caps text-secondary-fixed-dim flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">cyclone</span> ATMOSPHERIC
+                        </span>
+<span class="font-data-md text-data-md text-secondary-fixed-dim">CAT 4</span>
+</div>
+<div class="p-4 flex-grow flex flex-col justify-center">
+<div class="font-headline-sm text-headline-sm text-on-surface mb-1">Typhoon Yagi</div>
+<div class="font-body-sm text-body-sm text-text-muted mb-2">Wind: 130kt | Eye: 25nm</div>
+<!-- Mini Progress -->
+<div class="mt-2">
+<div class="flex justify-between font-label-caps text-[10px] text-text-muted mb-1">
+<span>INTENSITY</span>
+<span>85%</span>
+</div>
+<div class="h-1 bg-surface-variant rounded-full overflow-hidden">
+<div class="h-full bg-gradient-to-r from-secondary-fixed-dim to-primary-fixed w-[85%]"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Main Feed Section -->
+<section class="px-margin-mobile">
+<div class="border-b border-border-subtle pb-2 mb-4 flex justify-between items-end">
+<h2 class="font-label-caps text-label-caps text-on-surface-variant flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px]">feed</span> INTELLIGENCE FEED
+                </h2>
+<div class="font-data-md text-[12px] text-text-muted">LIVE SYNC</div>
+</div>
+<div class="flex flex-col space-y-4">
+<!-- Feed Card 1 -->
+<article class="bg-surface border border-border-subtle rounded p-4 flex flex-col hover:border-primary-fixed/50 transition-colors">
+<div class="flex justify-between items-start mb-2">
+<span class="font-label-caps text-label-caps text-primary-fixed px-2 py-0.5 bg-primary-fixed/10 rounded">CYBERSEC</span>
+<span class="font-data-md text-[12px] text-text-muted">10m ago</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-2">Zero-Day Vulnerability Detected in Global CDN Infrastructure</h3>
+<p class="font-body-sm text-body-sm text-text-muted mb-3 line-clamp-2">Threat actors are exploiting a critical flaw in edge routing protocols. Mitigation patches are currently deploying across tier-1 nodes.</p>
+<div class="flex items-center text-secondary-fixed-dim font-label-caps text-label-caps group cursor-pointer w-fit">
+                        READ BRIEF <span class="material-symbols-outlined text-[16px] ml-1 group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</div>
+</article>
+<!-- Feed Card 2 -->
+<article class="bg-surface border border-border-subtle rounded p-4 flex flex-col hover:border-primary-fixed/50 transition-colors">
+<div class="flex justify-between items-start mb-2">
+<span class="font-label-caps text-label-caps text-secondary-fixed px-2 py-0.5 bg-secondary-fixed/10 rounded">AEROSPACE</span>
+<span class="font-data-md text-[12px] text-text-muted">45m ago</span>
+</div>
+<div class="mb-3 w-full h-32 bg-surface-container rounded overflow-hidden relative">
+<img class="object-cover w-full h-full opacity-80 mix-blend-luminosity hover:mix-blend-normal transition-all duration-300" data-alt="A highly detailed, cinematic shot of a futuristic rocket launch at dusk. The scene is illuminated by the intense, bright orange and yellow thruster flames contrasting with a deep, dark blue sky. The overall aesthetic is high-tech, modern, and serious, aligning with a dark mode mission control theme. Intricate mechanical details of the launch pad and rocket body are visible." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCy_86jBUzKNjxrnnSXFqC0Zfjprt9ytb9FfGu5pLEkBA6_gJsU2P_w6oPYqRQLS1yhHOdPngwBAIA_pipw9S3cSWbfaBNZKamlKPPAKDYC6PXcyOzXz4nXrA0Rs8fSJ_N86NUrYTxRq-DuowhTqUsZfvshIl0C_Azkin5yiClyRlqk7gMDi-iTCTdHa44h6v7s7-bWYs61UFGmCa5xXEqcr7WkiM63H5hxxycw4cjfmzXiZW7NZd3lXQ"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent"></div>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-2">Heavy Lift Vehicle Reaches Geosynchronous Transfer Orbit</h3>
+<p class="font-body-sm text-body-sm text-text-muted">Payload deployment confirmed nominal. Solar arrays unfurled and generating expected wattage.</p>
+</article>
+<!-- Loading Skeletons -->
+<article class="bg-surface border border-border-subtle rounded p-4 flex flex-col opacity-60">
+<div class="flex justify-between items-start mb-4">
+<div class="w-20 h-5 animate-shimmer rounded"></div>
+<div class="w-12 h-4 animate-shimmer rounded"></div>
+</div>
+<div class="w-3/4 h-6 animate-shimmer rounded mb-2"></div>
+<div class="w-1/2 h-6 animate-shimmer rounded mb-4"></div>
+<div class="w-full h-4 animate-shimmer rounded mb-2"></div>
+<div class="w-full h-4 animate-shimmer rounded mb-2"></div>
+<div class="w-2/3 h-4 animate-shimmer rounded"></div>
+</article>
+</div>
+</section>
+</main>
+<!-- SideNavBar Bottom Bar logic applied for mobile based on Shared Components instructions (Mobile Responsive Pivot) -->
+<nav class="fixed bottom-0 left-0 w-full bg-surface-dim border-t border-border-subtle flex justify-around items-center h-16 z-50 md:hidden">
+<!-- Intelligence (Active) -->
+<a class="flex flex-col items-center justify-center w-full h-full text-primary-fixed border-t-2 border-primary-fixed pt-1" href="#">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">analytics</span>
+<span class="font-label-caps text-[10px]">INTEL</span>
+</a>
+<!-- Seismic -->
+<a class="flex flex-col items-center justify-center w-full h-full text-on-surface-variant hover:text-on-surface transition-colors" href="#">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 0;">sensors</span>
+<span class="font-label-caps text-[10px]">SEISMIC</span>
+</a>
+<!-- Atmospheric -->
+<a class="flex flex-col items-center justify-center w-full h-full text-on-surface-variant hover:text-on-surface transition-colors" href="#">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 0;">cyclone</span>
+<span class="font-label-caps text-[10px]">ATMOS</span>
+</a>
+<!-- Archive -->
+<a class="flex flex-col items-center justify-center w-full h-full text-on-surface-variant hover:text-on-surface transition-colors" href="#">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 0;">database</span>
+<span class="font-label-caps text-[10px]">ARCHIVE</span>
+</a>
+</nav>
+</body></html>
