@@ -1,7 +1,17 @@
 import Region from "./components/region";
 import Updates from "./components/updates";
 export default function App() {
-	const APIKEY = process.env.NEWS_API_KEY;
+	const API_URL = import.meta.env.VITE_NEWS_API_URL
+	const API_KEY = import.meta.env.VITE_NEWS_API_KEY
+	async function fetchData() {
+ 		 try {
+    		const response = await fetch(`${API_URL}&apiKey=${API_KEY}`);
+    		const data = await response.json();
+    		return data;
+  		} catch (error) {
+    	console.error('Fetch failed:', error);
+  	}
+}
 	return (
 		<main className="flex min-h-screen flex-col bg-gray-900">
 			<nav className="navbar flex h-16 w-full items-center justify-between bg-gray-800 px-6 text-white">
@@ -40,12 +50,17 @@ export default function App() {
 
 				<article className="mainBody w-[80%] flex flex-col p-4">
 					<span className="">
-						<p className="text-white">Tech signals</p>
+						<p className="text-gray-500 font-bold text-xl p-4">Tech signals</p>
+
 					</span>
-					<div className="flex">
-						<div className=" flex flex-col items-center gap-4 p-6">
+					<div className="flex w-full">
+						<div className="w-[70%] flex flex-col items-center gap-4 p-6">
+							<Updates details="Anthropic announces Claude 3.5 Sonnet" />
+							<Updates details="Anthropic announces Claude 3.5 Sonnet" />
+							<Updates details="Anthropic announces Claude 3.5 Sonnet" />
 							<Updates details="Anthropic announces Claude 3.5 Sonnet" />
 						</div>
+						<div className="w-[30%]"></div>
 					</div>
 				</article>
 			</section>
