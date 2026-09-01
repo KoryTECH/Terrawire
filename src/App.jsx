@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { fetchEarthquakeData } from "./api/earthquakes";
+import { fetchOpenNaturalEvents } from "./api/eonet";
 
 export default function App() {
 	const [earthquakeData, setEarthquakeData] = useState(null);
@@ -10,6 +11,8 @@ export default function App() {
 	const [quakeSort, setQuakeSort] = useState("magnitude");
 	const [searchText, setSearchText] = useState("");
 	const [clock, setClock] = useState(new Date());
+	const [naturalEvents, setNaturalEvents] = useState([]);
+	const [isNaturalLoading, setIsNaturalLoading] = useState(false);
 
 	async function fetchData(signal) {
 		setIsLoading(true);
@@ -29,12 +32,34 @@ export default function App() {
 		}
 	}
 
+	async function fetchNaturalData(signal) {
+		setIsNaturalLoading(true);
+		try {
+			const requestOptions = signal ? { signal } : {};
+			const data = await fetchOpenNaturalEvents({ limit: "8" }, requestOptions);
+			setNaturalEvents(data?.events ?? []);
+		} catch (error) {
+			if (error.name !== "AbortError") {
+				console.error("Natural events fetch failed:", error);
+				setNaturalEvents([]);
+			}
+		} finally {
+			setIsNaturalLoading(false);
+		}
+	}
+
 	useEffect(() => {
 		const controller = new AbortController();
 		fetchData(controller.signal);
+		fetchNaturalData(controller.signal);
 
 		return () => controller.abort();
 	}, []);
+
+	function handleRefresh() {
+		fetchData();
+		fetchNaturalData();
+	}
 
 	useEffect(() => {
 		const timerId = window.setInterval(() => {
@@ -285,14 +310,28 @@ export default function App() {
 		);
 	}, [techCards, searchText]);
 
-	const naturalEventSamples = [
-		{
-			icon: "local_fire_department",
-			name: "Park Fire",
-			location: "California, USA",
-		},
-		{ icon: "volcano", name: "Mount Etna Eruption", location: "Sicily, Italy" },
-	];
+	const naturalEventRows = useMemo(() => {
+		return naturalEvents.slice(0, 8).map((event) => {
+			const latest = event.geometry?.[event.geometry.length - 1];
+			const category = event.categories?.[0]?.title || "Event";
+			const location = event.geometry?.[0]?.coordinates
+				? `${event.geometry[0].coordinates[1].toFixed(2)}, ${event.geometry[0].coordinates[0].toFixed(2)}`
+				: "Global";
+
+			return {
+				id: event.id,
+				title: event.title,
+				category,
+				location,
+				time: latest?.date
+					? new Date(latest.date).toLocaleString()
+					: "Unknown time",
+				link: event.sources?.[0]?.url,
+			};
+		});
+	}, [naturalEvents]);
+
+	const showNaturalWidget = isNaturalLoading || naturalEventRows.length > 0;
 
 	const launchCards = [
 		{
@@ -368,7 +407,7 @@ export default function App() {
 					</p>
 					<button
 						type="button"
-						onClick={() => fetchData()}
+						onClick={handleRefresh}
 						className="p-2 rounded hover:bg-[#31353c] transition"
 					>
 						<span
@@ -576,49 +615,57 @@ export default function App() {
 						</div>
 					</div>
 
-					<div className="bg-[#161b22] border border-[#30363d] rounded-xl overflow-hidden relative">
-						<div className="px-4 py-3 border-b border-[#30363d] bg-[#181c22]">
-							<p className="text-xs tracking-[0.08em] flex items-center gap-2">
-								<span className="material-symbols-outlined text-sm text-[#00dce6]">
-									public
-								</span>
-								NATURAL EVENTS
-							</p>
-						</div>
-						<div className="p-2 space-y-1 opacity-25 pointer-events-none">
-							{naturalEventSamples.map((event) => (
-								<div
-									key={event.name}
-									className="flex items-center gap-3 p-2"
-								>
-									<span className="material-symbols-outlined text-orange-400 text-lg">
-										{event.icon}
+					{showNaturalWidget ? (
+						<div className="bg-[#161b22] border border-[#30363d] rounded-xl overflow-hidden">
+							<div className="px-4 py-3 border-b border-[#30363d] bg-[#181c22] flex items-center justify-between">
+								<p className="text-xs tracking-[0.08em] flex items-center gap-2">
+									<span className="material-symbols-outlined text-sm text-[#00dce6]">
+										public
 									</span>
-									<div>
-										<p className="text-sm">{event.name}</p>
-										<p className="text-xs text-gray-500">{event.location}</p>
+									NATURAL EVENTS
+								</p>
+								{isNaturalLoading ? (
+									<span className="text-xs text-gray-500">syncing...</span>
+								) : null}
+							</div>
+							<div className="p-2 space-y-1">
+								{naturalEventRows.map((event) => (
+									<div
+										key={event.id}
+										className="flex items-start gap-3 p-2 rounded-lg hover:bg-[#31353c]/50 transition-colors"
+									>
+										<span className="material-symbols-outlined text-orange-400 text-lg">
+											public
+										</span>
+										<div className="min-w-0 flex-1">
+											<p className="text-sm truncate">{event.title}</p>
+											<p className="text-xs text-gray-500 truncate">
+												{event.category} | {event.location}
+											</p>
+											<p className="text-xs text-gray-500 truncate">
+												{event.time}
+											</p>
+											{event.link ? (
+												<a
+													href={event.link}
+													target="_blank"
+													rel="noreferrer"
+													className="text-xs text-blue-300 underline"
+												>
+													open source event
+												</a>
+											) : null}
+										</div>
 									</div>
-								</div>
-							))}
+								))}
+								{isNaturalLoading && naturalEventRows.length === 0 ? (
+									<p className="text-xs text-gray-500 p-2">
+										Loading natural events...
+									</p>
+								) : null}
+							</div>
 						</div>
-						<div className="absolute inset-0 bg-[#161b22]/90 backdrop-blur-sm flex flex-col items-center justify-center text-center p-4">
-							<span className="material-symbols-outlined text-red-300 text-2xl mb-2">
-								error
-							</span>
-							<p className="text-sm text-red-300 mb-3">
-								Couldn't reach NASA EONET API
-							</p>
-							<button
-								type="button"
-								className="px-4 py-1.5 border border-[#3b4b37] rounded text-xs hover:bg-[#31353c] flex items-center gap-2"
-							>
-								<span className="material-symbols-outlined text-sm">
-									refresh
-								</span>
-								Retry Connection
-							</button>
-						</div>
-					</div>
+					) : null}
 
 					<div className="bg-[#161b22] border border-[#30363d] rounded-xl overflow-hidden">
 						<div className="px-4 py-3 border-b border-[#30363d] bg-[#181c22]">
